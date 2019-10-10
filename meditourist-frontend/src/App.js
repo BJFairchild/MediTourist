@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./App.css";
 import LogInContainer from "./containers/LogInContainer";
+import NavBar from "./components/NavBar"
+import InitialSearchContainer from "./containers/InitialSearchContainer";
 
 class App extends Component {
   constructor() {
@@ -11,7 +13,7 @@ class App extends Component {
     };
   }
 
-  logIn = (userName, password) => {
+  logIn = (userName, passWord) => {
     fetch(this.props.BackendURL + "/login", {
       method: "POST",
       headers: {
@@ -19,19 +21,28 @@ class App extends Component {
         Accept: "application/json"
       },
       body: JSON.stringify({
-        username: userName
+        username: userName,
+        password: passWord
       })
     })
       .then(response => response.json())
-      .then(data => this.setState({
-        currentUser: data}))
-        .then(async () => console.log("logged in user", this.state));
+      .then(data =>
+        this.setState({
+          currentUser: data
+        })
+      )
+      .then(async () => console.log("logged in user", this.state));
   };
 
   render() {
-    
-    return <LogInContainer BackendURL={this.props.BackendURL} onLogIn={this.logIn}/>;
+    return (
+      <div>
+      <LogInContainer BackendURL={this.props.BackendURL} onLogIn={this.logIn} />
+      <NavBar />
+      <InitialSearchContainer />
 
+      </div>
+    );
   }
 }
 
