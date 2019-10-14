@@ -6,4 +6,7 @@ Rails.application.routes.draw do
 
   post '/login', to: 'auth#create'
   post '/users', to: 'users#create'
+  post '/getcountries', to: 'scrape#getCountryChoices'
+  post '/getclinics', to: 'scrape#getClinics'
+  post '/getclinicoverview', to: 'scrape#getClinicOverview'
 end
