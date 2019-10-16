@@ -3,7 +3,8 @@ import "./App.css";
 import LogInContainer from "./containers/LogInContainer";
 import NavBar from "./components/NavBar";
 import InitialSearchContainer from "./containers/InitialSearchContainer";
-import ClinicCardContainer from './containers/ClinicCardContainer'
+import ClinicCardContainer from "./containers/ClinicCardContainer";
+import TripsContainer from "./containers/TripsContainer";
 
 class App extends Component {
   constructor() {
@@ -15,8 +16,13 @@ class App extends Component {
       price: 0,
       us_cost: 0,
       selected_country: "",
-      selected_clinic: [],
+      selected_clinic: {
+        name: "",
+        address: "",
+        overview: ""
+      },
       clinic_choices: [],
+      allTrips: []
     };
   }
 
@@ -47,6 +53,8 @@ class App extends Component {
   };
 
   handleProcedureChange = e => {
+    console.log("test",e.target.value)
+    console.log(e.target.id)
     this.setState({
       procedure: e.target.value
     });
@@ -58,13 +66,11 @@ class App extends Component {
     });
   };
 
-
-
-  handleScrapeForClinicCards = (e) => {
-    e.preventDefault()
-    console.log("scrape for clinic cards")
-    console.log("procedure for clinic cards", this.state.procedure)
-    console.log("country for clinic cards", this.state.selected_country)
+  handleScrapeForClinicCards = e => {
+    e.preventDefault();
+    console.log("scrape for clinic cards");
+    console.log("procedure for clinic cards", this.state.procedure);
+    console.log("country for clinic cards", this.state.selected_country);
 
     fetch(this.props.BackendURL + "/getclinics", {
       method: "POST",
@@ -77,14 +83,18 @@ class App extends Component {
         procedure: this.state.procedure,
         country: this.state.selected_country
       })
-    }).then(res => res.json())
-    .then(data => this.setState({
-      clinic_choices: data
-  }))};
+    })
+      .then(res => res.json())
+      .then(data =>
+        this.setState({
+          clinic_choices: data
+        })
+      );
+  };
 
-  handleModalScrapeAndGeneration = (search_term) => {
-    console.log("search term in app",search_term)
-    
+  handleModalScrapeAndGeneration = (search_term, clinic_name, price) => {
+    console.log("search term in app", search_term);
+
     fetch(this.props.BackendURL + "/getclinicoverview", {
       method: "POST",
       headers: {
@@ -95,9 +105,29 @@ class App extends Component {
       body: JSON.stringify({
         searchterm: search_term
       })
-    }).then(res => res.json())
-    .then(data => console.log("results", data))
+    })
+      .then(res => res.json())
+      .then(data =>
+        this.setState({
+          price: price,
+          selected_clinic: {
+            name: clinic_name,
+            address: data[0],
+            overview: data[1]
+          }
+        })
+      )
+      .then(async () =>
+        console.log("state after clicking modal button", this.state)
+      );
+  };
+
+  setAllTrips = (data) => {
+    this.setState({
+      allTrips: data
+    })
   }
+
 
   render() {
     return (
@@ -106,15 +136,21 @@ class App extends Component {
           BackendURL={this.props.BackendURL}
           onLogIn={this.logIn}
         />
-        <NavBar />
+        <NavBar state={this.state} setAllTrips={this.setAllTrips} BackendURL={this.props.BackendURL}/>
         <InitialSearchContainer
           procedure={this.state.procedure}
           handleProcedureChange={this.handleProcedureChange}
           handleCountryChange={this.handleCountryChange}
-          handleScrapeForClinicCards={(e) => this.handleScrapeForClinicCards(e)}
+          handleScrapeForClinicCards={e => this.handleScrapeForClinicCards(e)}
           BackendURL={this.props.BackendURL}
         />
-        <ClinicCardContainer clinic_choices={this.state.clinic_choices} handleModalScrapeAndGeneration={this.handleModalScrapeAndGeneration}/>
+        <ClinicCardContainer
+          state={this.state}
+          BackendURL={this.props.BackendURL}
+          clinic_choices={this.state.clinic_choices}
+          handleModalScrapeAndGeneration={this.handleModalScrapeAndGeneration}
+        />
+        <TripsContainer state={this.state} setAllTrips={this.setAllTrips}BackendURL={this.props.BackendURL} />
       </div>
     );
   }

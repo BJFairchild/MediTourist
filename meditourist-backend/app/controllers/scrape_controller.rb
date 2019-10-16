@@ -85,22 +85,14 @@ class ScrapeController < ApplicationController
         location = page.search('div#clinic-map p').text.strip
 
         clinic_overview_item = page.search('div.description-markdown p')
-        description = clinic_overview_item.each do |item|
-            if item != clinic_overview_item[-1]
-              puts ""
-              puts item.text
-            else
-              puts item.text
-            end
-        end
 
         descript_array = []
         @results = []
         @results << location
-        description.each do |item|
-            descript_array << item.text
+        clinic_overview_item.each do |item|
+            descript_array << item.text.strip
         end
-        @results << descript_array.join("\n")
+        @results << descript_array
 
         render :json => @results
     end

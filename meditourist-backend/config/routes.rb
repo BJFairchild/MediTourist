@@ -9,4 +9,7 @@ Rails.application.routes.draw do
   post '/getcountries', to: 'scrape#getCountryChoices'
   post '/getclinics', to: 'scrape#getClinics'
   post '/getclinicoverview', to: 'scrape#getClinicOverview'
+  post '/trips', to: 'trips#create'
+  post '/user-trips', to: 'trips#getTrips'
+  post '/deletetrip', to: 'trips#destroy'
 end

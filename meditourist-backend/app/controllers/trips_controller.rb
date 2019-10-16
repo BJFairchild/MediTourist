@@ -5,7 +5,6 @@ class TripsController < ApplicationController
     end
 
     def show
-        byebug
         @trip = Trip.find(params[:id])
         render :json => @trip
     end
@@ -16,9 +15,18 @@ class TripsController < ApplicationController
         render :json => @trip
     end
 
+    def getTrips
+        @user = User.find(params[:user_id])
+        @trips = @user.trips
+        render :json => @trips
+    end
+
     def destroy
         @trip = Trip.find(params[:id])
         @trip.delete
+        @user = User.find(params[:user_id])
+        @trips = @user.trips
+        render :json => @trips
     end
 
 
@@ -26,7 +34,7 @@ class TripsController < ApplicationController
     private
 
     def trip_params
-        params.require(:trip).permit(:procedure, :price, :country, :clinic_name, :clinic_overview, :address)
+        params.require(:trip).permit(:procedure, :price, :country, :clinic_name, :clinic_overview, :address, :user_id)
     end
 
 end
