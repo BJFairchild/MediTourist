@@ -38,5 +38,5 @@ class TripMap extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyBxEBLD9heggwc6PzbEoBjDS2-Av_saNJM"
+  apiKey: ""
 })(TripMap);

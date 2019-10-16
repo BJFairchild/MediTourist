@@ -9,34 +9,34 @@ class LogIn extends Component {
 
   handleOnChangeUserName = e => {
     this.setState({
-      inputName: e.target.value,
+      inputName: e.target.value
     });
   };
 
   handleOnChangePassword = e => {
     this.setState({
-      inputPass: e.target.value,
+      inputPass: e.target.value
     });
   };
 
   handleSignIn = () => {
     let username = this.state.inputName;
-    let password = this.state.inputPass
-    this.props.onLogIn(username, password)
+    let password = this.state.inputPass;
+    this.props.onLogIn(username, password);
   };
 
   render() {
     return (
       <div>
-          <label>Username</label>
+        <label>Username</label>
         <input
-          type="text" 
+          type="text"
           value={this.state.inputName}
           onChange={this.handleOnChangeUserName}
         />
         <label>Password</label>
         <input
-          type="text" 
+          type="text"
           value={this.state.inputPass}
           onChange={this.handleOnChangePassword}
         />
