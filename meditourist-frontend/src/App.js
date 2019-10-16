@@ -52,11 +52,18 @@ class App extends Component {
       });
   };
 
-  handleProcedureChange = e => {
-    console.log("test",e.target.value)
-    console.log(e.target.id)
+  logOut = () => {
+    console.log("logging out")
     this.setState({
-      procedure: e.target.value
+      currentUser: null
+    })
+  }
+
+  handleProcedureChange = e => {
+    console.log("price",parseInt(e.target.value.slice(0, 5)))
+    this.setState({
+      procedure: e.target.value.slice(5),
+      us_cost: e.target.value.slice(0,5)
     });
   };
 
@@ -136,8 +143,9 @@ class App extends Component {
           BackendURL={this.props.BackendURL}
           onLogIn={this.logIn}
         />
-        <NavBar state={this.state} setAllTrips={this.setAllTrips} BackendURL={this.props.BackendURL}/>
+        <NavBar state={this.state} logOut={this.logOut} setAllTrips={this.setAllTrips} BackendURL={this.props.BackendURL}/>
         <InitialSearchContainer
+          state={this.state}
           procedure={this.state.procedure}
           handleProcedureChange={this.handleProcedureChange}
           handleCountryChange={this.handleCountryChange}

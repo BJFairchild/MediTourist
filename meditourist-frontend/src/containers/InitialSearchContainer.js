@@ -57,11 +57,17 @@ class InitialSearchContainer extends Component {
     });
   };
 
+  welcomeMessage = () => {
+    if (this.props.state.currentUser){
+      return <h2>Welcome, {this.props.state.currentUser["user"]["username"]}</h2>
+    }
+  }
+
   render() {
     return (
       <div>
         InitialSearchContainer
-        <h2>Welcome, Username</h2>
+        {this.welcomeMessage()}
         <ProcedureSelect
           procedure={this.state.procedure}
           handleProcedureChange={this.props.handleProcedureChange}
