@@ -8,6 +8,7 @@ class CreateTrips < ActiveRecord::Migration[5.2]
       t.string :clinic_overview
       t.string :address
       t.integer :user_id
+      t.integer :savings
 
 
       t.timestamps

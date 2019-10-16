@@ -82,6 +82,7 @@ class NavBar extends Component {
         <div>
           <h5>Procedure</h5>
           {this.populateProcedure()}
+          </div><div>
           <h5>Country</h5>
           {this.populateCountry()}
         </div>

@@ -17,7 +17,7 @@ class TripsContainer extends Component {
   };
 
   generateMap = () => {
-      if (this.state.showMap !== false){
+      if (this.state.showMap){
           return <TripMap BackendURL={this.props.BackendURL} state={this.props.state}/>
       } 
       
@@ -35,6 +35,7 @@ class TripsContainer extends Component {
       <div>
         Trips Container
         {this.generateTripCards()}
+        {this.generateMap()}
 
         
       </div>

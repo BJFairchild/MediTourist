@@ -69,7 +69,8 @@ class ModalScroll extends Component {
         clinic_name: this.props.item[0],
         clinic_overview: this.props.state.selected_clinic["overview"].join(" "),
         address: this.props.state.selected_clinic["address"],
-        user_id: this.props.state.currentUser["user"]["id"]
+        user_id: this.props.state.currentUser["user"]["id"],
+        savings: ((parseInt(this.props.state.us_cost))-(parseInt(this.props.state.price.slice(2).replace(/,/g, ""))))
       })
     });
   };

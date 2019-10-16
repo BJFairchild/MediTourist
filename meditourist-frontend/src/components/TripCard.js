@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Button, Card, Image } from "semantic-ui-react";
+import TripMap from "../components/TripMap"
+
 
 class TripCard extends Component {
 
@@ -38,7 +40,7 @@ class TripCard extends Component {
       clinic_overview,
       country,
       price,
-      procedure
+      procedure, savings
     } = this.props.item;
 
 
@@ -48,16 +50,17 @@ class TripCard extends Component {
           <Card.Content>
               <Image
             floated='right' size='mini'
-            src='https://react.semantic-ui.com/images/avatar/large/steve.jpg'
+            src='' alt='flag'
             />
             <Card.Header>My {procedure} Trip</Card.Header>
             <Card.Meta>Destination: {country}</Card.Meta>
             <Card.Description>Price: ${price}</Card.Description>
+            <Card.Description>Savings: ${savings}</Card.Description>
           </Card.Content>
           <Card.Content extra>
               <div className='ui two buttons'>
                   <Button onClick={this.handleClick} basic color='green'>
-                      More Info
+                      Show Map
                   </Button>
                   <Button basic color='red' value={id} onClick={this.deleteTrip}>
                       Delete Trip
