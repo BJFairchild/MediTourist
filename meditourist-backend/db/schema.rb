@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 2019_10_09_222407) do
     t.string "address"
     t.integer "user_id"
     t.integer "savings"
+    t.string "flag_url"
+    t.string "destination_city"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

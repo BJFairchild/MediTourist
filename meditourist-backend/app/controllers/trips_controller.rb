@@ -11,6 +11,7 @@ class TripsController < ApplicationController
 
     def create
         @trip = Trip.new(trip_params)
+        byebug
         @trip.save
         render :json => @trip
     end
@@ -34,7 +35,7 @@ class TripsController < ApplicationController
     private
 
     def trip_params
-        params.require(:trip).permit(:procedure, :price, :country, :clinic_name, :clinic_overview, :address, :user_id, :savings)
+        params.require(:trip).permit(:procedure, :price, :country, :clinic_name, :clinic_overview, :address, :user_id, :savings, :flag_url, :destination_city)
     end
 
 end

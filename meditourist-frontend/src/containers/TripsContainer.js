@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import TripCard from "../components/TripCard";
-import TripMap from "../components/TripMap"
 
 class TripsContainer extends Component {
   
@@ -21,6 +20,7 @@ class TripsContainer extends Component {
       <div>
         Trips Container
         {this.generateTripCards()}
+        
 
         
       </div>

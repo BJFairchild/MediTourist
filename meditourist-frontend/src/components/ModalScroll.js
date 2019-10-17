@@ -2,14 +2,35 @@ import React, { Component } from "react";
 import { Button, Header, Icon, Image, Modal } from "semantic-ui-react";
 
 class ModalScroll extends Component {
-  state = { baseUrl: "https://www.medigo.com/" };
+  state = { baseUrl: "https://www.medigo.com/", flagURL: "" };
 
   generateModal = () => {
-    console.log("clicking gen modal");
+    this.fetchFlag();
     let search_term = this.state.baseUrl + this.props.item[1];
     let clinic_name = this.props.item[0];
     let price = this.props.item[3];
     this.props.handleModalScrapeAndGeneration(search_term, clinic_name, price);
+  };
+
+  fetchFlag = () => {
+    fetch(this.props.BackendURL + "/getflag", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        country: this.props.state.selected_country
+      })
+    })
+      .then(res => res.json())
+      .then(data =>
+        this.setState({
+          flagURL: data
+        })
+      )
+      .then(async () => console.log(this.state));
   };
 
   formatOverview = () => {
@@ -70,7 +91,15 @@ class ModalScroll extends Component {
         clinic_overview: this.props.state.selected_clinic["overview"].join(" "),
         address: this.props.state.selected_clinic["address"],
         user_id: this.props.state.currentUser["user"]["id"],
-        savings: ((parseInt(this.props.state.us_cost))-(parseInt(this.props.state.price.slice(2).replace(/,/g, ""))))
+        savings:
+          parseInt(this.props.state.us_cost) -
+          parseInt(this.props.state.price.slice(2).replace(/,/g, "")),
+        flag_url: this.state.flagURL["flag"],
+        destination_city: this.props.cityCountry.substring(
+          0,
+          this.props.cityCountry.lastIndexOf(",")
+        )
+        
       })
     });
   };
@@ -78,9 +107,9 @@ class ModalScroll extends Component {
   render() {
     return (
       <div>
-        {console.log("state in modal", this.props.state)}
         <Modal
           trigger={<Button onClick={this.generateModal}>Modal Info</Button>}
+          closeIcon
         >
           <Modal.Header>
             Procedure: {this.formatProcedureName()}
@@ -90,7 +119,8 @@ class ModalScroll extends Component {
             <Image
               wrapped
               size="medium"
-              src="https://react.semantic-ui.com/images/wireframe/image.png"
+              src={this.state.flagURL["flag"]}
+              alt="maybe reviews?"
             />
             <Modal.Description>
               <Header>{this.props.state.selected_clinic["name"]}</Header>

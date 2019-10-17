@@ -9,6 +9,8 @@ class CreateTrips < ActiveRecord::Migration[5.2]
       t.string :address
       t.integer :user_id
       t.integer :savings
+      t.string :flag_url
+      t.string :destination_city
 
 
       t.timestamps

@@ -1,22 +1,20 @@
 import React, { Component } from "react";
-import ModalScroll from './ModalScroll'
+import ModalScroll from "./ModalScroll";
 
 class ClinicCard extends Component {
-
   showModal = () => {
-    return <ModalScroll BackendURL={this.props.BackendURL} state={this.props.state}handleModalScrapeAndGeneration={
-        this.props.handleModalScrapeAndGeneration} item={this.props.item}/>;
+    return (
+      <ModalScroll
+        BackendURL={this.props.BackendURL}
+        cityCountry={this.props.item[2]}
+        state={this.props.state}
+        handleModalScrapeAndGeneration={
+          this.props.handleModalScrapeAndGeneration
+        }
+        item={this.props.item}
+      />
+    );
   };
-
- 
-
-//   generateModal = () => {
-//       console.log("clicking gen modal")
-//     let search_term = this.state.baseUrl + this.props.item[1];
-//     let clinic_name = this.props.item[0];
-//     let price = this.props.item[3];
-//     this.props.handleModalScrapeAndGeneration(search_term, clinic_name, price);
-//   };
 
   generatePrice = () => {
     return this.props.item[3] ? (
@@ -26,16 +24,14 @@ class ClinicCard extends Component {
     );
   };
   render() {
-    return (<div>
+    return (
       <div>
-        <h2>{this.props.item[0]}</h2>
-        <h4>{this.props.item[2]}</h4>
-        {this.generatePrice()}
-        {/* <button value={this.props.item[1]} onClick={this.generateModal}>
-          More Information
-        </button> */}
-        <div>{this.showModal()}</div>
-      </div>
+        <div>
+          <h2>{this.props.item[0]}</h2>
+          <h4>{this.props.item[2]}</h4>
+          {this.generatePrice()}
+          <div>{this.showModal()}</div>
+        </div>
       </div>
     );
   }

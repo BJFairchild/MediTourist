@@ -10,13 +10,13 @@ import {
 
 const mapStyles = {
   width: "60vw",
-  height: "60vh"
+  height: "80vh"
 };
 
 class TripMap extends Component {
   state = {
     center: this.props.center,
-    zoom: 13
+    zoom: 12
   };
 
 
@@ -38,5 +38,5 @@ class TripMap extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: ""
+  apiKey: "AIzaSyBxEBLD9heggwc6PzbEoBjDS2-Av_saNJM"
 })(TripMap);

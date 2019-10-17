@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { Button, Card, Image } from "semantic-ui-react";
 import TripMap from "../components/TripMap";
+import FlightContainer from "../containers/FlightContainer"
+
 
 class TripCard extends Component {
   state = {
     showMap: false,
-    center: {}
+    center: {},
+    flight_cost: 0
   };
 
   generateMap = () => {
@@ -61,11 +64,25 @@ class TripCard extends Component {
       .then(data => this.props.setAllTrips(data));
   };
 
-  handleClick = () => {
-    this.showMap();
+  hideMap = () => {
+    this.setState({
+      showMap: false
+    });
   };
 
-  render() {
+  toggleShowMapButton = () => {
+    return this.state.showMap === false ? (
+      <Button onClick={this.showMap} basic color="green">
+        Show Map
+      </Button>
+    ) : (
+      <Button onClick={this.hideMap} basic color="green">
+        Hide Map
+      </Button>
+    );
+  };
+
+  isFlightCostSet = () => {
     let {
       id,
       address,
@@ -74,26 +91,47 @@ class TripCard extends Component {
       country,
       price,
       procedure,
-      savings
+      savings,
+      flag_url
     } = this.props.item;
 
+    return this.state.flight_cost === 0 ? (
+      <Card.Content>
+        <Image floated="right" size="mini" src={flag_url} alt="flag" />
+        <Card.Header>My {procedure} Trip</Card.Header>
+        <Card.Meta>Destination: {country}</Card.Meta>
+        <Card.Description>Procedure: ${price}</Card.Description>
+        <Card.Description>Savings: ${savings}</Card.Description>
+        <Button onClick={this.createFlight}>Find a Flight</Button>
+      </Card.Content>
+    ) : (
+      <Card.Content>
+        <Image floated="right" size="mini" src={flag_url} alt="flag" />
+        <Card.Header>My {procedure} Trip</Card.Header>
+        <Card.Meta>Destination: {country}</Card.Meta>
+        <Card.Description>Procedure: ${price}</Card.Description>
+        <Card.Description>Flight: ${this.state.flight_cost}</Card.Description>
+        <Card.Description>Savings: ${savings}</Card.Description>
+      </Card.Content>
+    );
+  };
+
+  createFlight = () => {
+      console.log("clicking create flight")
+      let country = this.props.item.country
+
+  }
+
+  render() {
     return (
       <div>
         <div>
           <Card>
-            <Card.Content>
-              <Image floated="right" size="mini" src="" alt="flag" />
-              <Card.Header>My {procedure} Trip</Card.Header>
-              <Card.Meta>Destination: {country}</Card.Meta>
-              <Card.Description>Price: ${price}</Card.Description>
-              <Card.Description>Savings: ${savings}</Card.Description>
-            </Card.Content>
+            {this.isFlightCostSet()}
             <Card.Content extra>
               <div className="ui two buttons">
-                <Button onClick={this.handleClick} basic color="green">
-                  Show Map
-                </Button>
-                <Button basic color="red" value={id} onClick={this.deleteTrip}>
+                {this.toggleShowMapButton()}
+                <Button basic color="red" value={this.props.item.id} onClick={this.deleteTrip}>
                   Delete Trip
                 </Button>
               </div>
@@ -101,6 +139,7 @@ class TripCard extends Component {
           </Card>
           {this.generateMap()}
         </div>
+        <FlightContainer address={this.props.item.address}/>
         <br></br>
       </div>
     );
