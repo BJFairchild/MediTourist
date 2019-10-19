@@ -119,8 +119,21 @@ class TripCard extends Component {
   createFlight = () => {
       console.log("clicking create flight")
       let country = this.props.item.country
-
-  }
+      let city = this.props.item.destination_city
+      fetch(this.props.BackendURL + "/getflights", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify({
+              city: city,
+              country: country
+          })
+      }).then(res => res.json())
+      .then(data => console.log(data))
+    }
 
   render() {
     return (
@@ -139,7 +152,7 @@ class TripCard extends Component {
           </Card>
           {this.generateMap()}
         </div>
-        <FlightContainer address={this.props.item.address}/>
+        <FlightContainer country={this.props.item.country} city={this.props.item.destination_city}/>
         <br></br>
       </div>
     );

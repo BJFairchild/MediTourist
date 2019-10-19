@@ -14,4 +14,5 @@ Rails.application.routes.draw do
   post '/deletetrip', to: 'trips#destroy'
   post '/getcoords', to: 'coms#getCoords'
   post '/getflag', to: 'coms#getFlag'
+  post '/getflights', to: 'coms#getFlights'
 end
