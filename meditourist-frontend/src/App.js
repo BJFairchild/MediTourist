@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom'
 import "./App.css";
 import LogInContainer from "./containers/LogInContainer";
 import NavBar from "./components/NavBar";
@@ -139,6 +140,8 @@ class App extends Component {
   render() {
     return (
       <div>
+        {/* <Router history={this.state.history}> */}
+          {/* <Route path='/signin'></Route> */}
         <LogInContainer
           BackendURL={this.props.BackendURL}
           onLogIn={this.logIn}
@@ -159,6 +162,7 @@ class App extends Component {
           handleModalScrapeAndGeneration={this.handleModalScrapeAndGeneration}
         />
         <TripsContainer state={this.state} setAllTrips={this.setAllTrips}BackendURL={this.props.BackendURL} />
+        {/* </Router> */}
       </div>
     );
   }

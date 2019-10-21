@@ -27,18 +27,18 @@ class ComsController < ApplicationController
   end
 
   def getFlights
-    search_term = (params[:city].parameterize) + '+' + (params[:country].parameterize)
+    search_term = (params[:city].parameterize).sub('-', '+') + '+' + (params[:country].parameterize)
     response = RestClient.get("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/USA/USD/en-US/?query=#{search_term}", headers={'x-rapidapi-host' => 'skyscanner-skyscanner-flight-search-v1.p.rapidapi.com', 'x-rapidapi-key' => 'ec39913906mshf4648972b6e832fp1b2936jsn6105500e65f5'})
     response = JSON.parse(response)
 
     airport_code = (response["Places"][0]["PlaceId"]).split('-')[0]
-    now = (Time.now + 2.days).to_s.slice(0..9).split('-')
-    month0 = now[1].sub('10', 'OCT').sub('11', 'NOV').sub('12', 'DEC').sub('1', 'JAN').sub('2', 'FEB').sub('3', 'MAR').sub('4', 'APR').sub('5', 'MAY').sub('6', 'JUN').sub('7', 'JUL').sub('8', 'AUG').sub('9', 'SEP')
-    in_ten_days = (Time.now + 12.days).to_s.slice(0..9).split('-')
-    month1 = in_ten_days[1].sub('10', 'OCT').sub('11', 'NOV').sub('12', 'DEC').sub('1', 'JAN').sub('2', 'FEB').sub('3', 'MAR').sub('4', 'APR').sub('5', 'MAY').sub('6', 'JUN').sub('7', 'JUL').sub('8', 'AUG').sub('9', 'SEP')
+    trip_start = (Time.now + 52.days).to_s.slice(0..9).split('-')
+    month0 = trip_start[1].sub('10', 'OCT').sub('11', 'NOV').sub('12', 'DEC').sub('1', 'JAN').sub('2', 'FEB').sub('3', 'MAR').sub('4', 'APR').sub('5', 'MAY').sub('6', 'JUN').sub('7', 'JUL').sub('8', 'AUG').sub('9', 'SEP')
+    trip_end = (Time.now + 62.days).to_s.slice(0..9).split('-')
+    month1 = trip_end[1].sub('10', 'OCT').sub('11', 'NOV').sub('12', 'DEC').sub('1', 'JAN').sub('2', 'FEB').sub('3', 'MAR').sub('4', 'APR').sub('5', 'MAY').sub('6', 'JUN').sub('7', 'JUL').sub('8', 'AUG').sub('9', 'SEP')
     
-    date0 = month0 + " " + now[2] + " " + now[0]
-    date1 = month1 + " " + in_ten_days[2] + " " + in_ten_days[0]
+    date0 = month0 + " " + trip_start[2] + " " + trip_start[0]
+    date1 = month1 + " " + trip_end[2] + " " + trip_end[0]
     
     response = RestClient.get("https://apidojo-hipmunk-v1.p.rapidapi.com/flights/create-session?country=US&pax=1&cabin=Coach&date0=#{date0}&date1=#{date1}&from0=SEA&to0=#{airport_code}&from1=#{airport_code}&to1=SEA", headers={'x-rapidapi-host' => 'apidojo-hipmunk-v1.p.rapidapi.com', 'x-rapidapi-key' => 'ec39913906mshf4648972b6e832fp1b2936jsn6105500e65f5'})
     response = JSON.parse(response)
@@ -67,7 +67,11 @@ class ComsController < ApplicationController
     end
     url = response["itins"][cheapest_flight[:key]]["booking_urls"][cheapest_flight[:booking_url]]["url"]
 
-    byebug
+    @result = []
+    @result << airlines.join(", ") << cheapest_flight[:price] << url
+    render :json => @result
+
+
 
   
 

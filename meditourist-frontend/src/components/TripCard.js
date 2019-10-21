@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import { Button, Card, Image } from "semantic-ui-react";
 import TripMap from "../components/TripMap";
-import FlightContainer from "../containers/FlightContainer"
-
+import FlightContainer from "../containers/FlightContainer";
 
 class TripCard extends Component {
   state = {
     showMap: false,
     center: {},
-    flight_cost: 0
+    flight_cost: 0,
+    flight_data: {
+      airlines: "",
+      price: 0,
+      url: ""
+    }
   };
 
   generateMap = () => {
@@ -95,7 +99,7 @@ class TripCard extends Component {
       flag_url
     } = this.props.item;
 
-    return this.state.flight_cost === 0 ? (
+    return this.state.flight_data.price === 0 ? (
       <Card.Content>
         <Image floated="right" size="mini" src={flag_url} alt="flag" />
         <Card.Header>My {procedure} Trip</Card.Header>
@@ -110,30 +114,43 @@ class TripCard extends Component {
         <Card.Header>My {procedure} Trip</Card.Header>
         <Card.Meta>Destination: {country}</Card.Meta>
         <Card.Description>Procedure: ${price}</Card.Description>
-        <Card.Description>Flight: ${this.state.flight_cost}</Card.Description>
-        <Card.Description>Savings: ${savings}</Card.Description>
+        <Card.Description>Flight: ${this.state.flight_data.price}</Card.Description>
+        <Card.Description>Savings: ${this.calculateSavings()}</Card.Description>
       </Card.Content>
     );
   };
 
+  calculateSavings = () => {
+      return (parseInt(this.props.item.savings) - parseInt(this.state.flight_data.price))
+  }
+
   createFlight = () => {
-      console.log("clicking create flight")
-      let country = this.props.item.country
-      let city = this.props.item.destination_city
-      fetch(this.props.BackendURL + "/getflights", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify({
-              city: city,
-              country: country
-          })
-      }).then(res => res.json())
-      .then(data => console.log(data))
-    }
+    console.log("clicking create flight");
+    let country = this.props.item.country;
+    let city = this.props.item.destination_city;
+    fetch(this.props.BackendURL + "/getflights", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        city: city,
+        country: country
+      })
+    })
+      .then(res => res.json())
+      .then(data =>
+        this.setState({
+          flight_data: {
+            airlines: data[0],
+            price: data[1],
+            url: data[2]
+          }
+        })
+      );
+  };
 
   render() {
     return (
@@ -144,7 +161,12 @@ class TripCard extends Component {
             <Card.Content extra>
               <div className="ui two buttons">
                 {this.toggleShowMapButton()}
-                <Button basic color="red" value={this.props.item.id} onClick={this.deleteTrip}>
+                <Button
+                  basic
+                  color="red"
+                  value={this.props.item.id}
+                  onClick={this.deleteTrip}
+                >
                   Delete Trip
                 </Button>
               </div>
@@ -152,7 +174,11 @@ class TripCard extends Component {
           </Card>
           {this.generateMap()}
         </div>
-        <FlightContainer country={this.props.item.country} city={this.props.item.destination_city}/>
+        <FlightContainer
+          flightData={this.state.flight_data}
+          country={this.props.item.country}
+          city={this.props.item.destination_city}
+        />
         <br></br>
       </div>
     );
