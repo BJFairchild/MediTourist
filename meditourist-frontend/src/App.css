@@ -2,7 +2,6 @@
   text-align: center;
   height: 100vh;
   width: 100%;
-  
 }
 
 .App-logo {
@@ -29,22 +28,67 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  border: solid
- }
- #navbar > div{
+  border: solid;
+}
+#navbar > div {
   box-sizing: border-box;
   border: solid;
   margin-bottom: 10px;
   margin-left: 2vw;
- }
+}
 
- #map {
-   height: 100vh;
-   width: 100vw;
- }
-
- body {
+#map {
   height: 100vh;
   width: 100vw;
-  
- }
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+}
+body {
+  background-color: #eee;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: grayscale;
+}
+
+.ui.container {
+  margin-top: 6rem;
+  max-width: 22rem !important;
+}
+
+.ui.large.form > .field:first-child {
+  margin-bottom: 0;
+}
+
+.trips {
+  display: flex;
+  justify-content: center;
+}
+
+.tripsWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.tripContainer {
+  display: flex;
+  flex-direction: column;
+}
+.loginContainer{
+  display: flex;
+  justify-content: center;
+  font-family: 'Fjalla One', sans-serif;
+}
+.ui.huge.header{
+  text-align: center;
+  font-family: 'Fjalla One', sans-serif;
+}
+.ui[class*="center aligned"].grid {
+  display: flex;
+  justify-content: center;
+  margin: 25vh 10vw 25vh 25vw;
+  padding-right: 25vw;
+  padding-left: 10vw;
+
+}

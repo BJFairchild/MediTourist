@@ -14,10 +14,10 @@ class FlightContainer extends Component {
         <Card>
           <Card.Content>
             <Card.Header>Flight to {this.props.city}</Card.Header>
-            <Card.Header>
+            <Card.Meta>
               Airline(s): {this.props.flightData.airlines}
-            </Card.Header>
-            <Card.Header>Price: ${this.props.flightData.price}</Card.Header>
+            </Card.Meta>
+            <Card.Description>Price: ${this.props.flightData.price}</Card.Description><br></br><br></br><br></br>
           </Card.Content>
           <Card.Content extra>
             <Button basic color="blue" onClick={this.openFlightDetails}>

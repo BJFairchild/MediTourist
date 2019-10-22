@@ -66,7 +66,6 @@ class InitialSearchContainer extends Component {
   render() {
     return (
       <div>
-        InitialSearchContainer
         {this.welcomeMessage()}
         <ProcedureSelect
           procedure={this.state.procedure}

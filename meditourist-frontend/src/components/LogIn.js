@@ -1,4 +1,11 @@
 import React, { Component } from "react";
+import {
+  Button,
+  Container,
+  Form,
+  Grid,
+  Header
+} from "semantic-ui-react";
 
 class LogIn extends Component {
   constructor(props) {
@@ -25,25 +32,44 @@ class LogIn extends Component {
     this.props.onLogIn(username, password);
   };
 
+  handleClick = () => {
+    this.props.changeNewUserFlag()
+    }
+
   render() {
     return (
-      <div>
-        <label>Username</label>
-        <input
-          type="text"
-          value={this.state.inputName}
-          onChange={this.handleOnChangeUserName}
-        />
-        <label>Password</label>
-        <input
-          type="text"
-          value={this.state.inputPass}
-          onChange={this.handleOnChangePassword}
-        />
-        <button id="signInBtn" onClick={this.handleSignIn}>
-          Sign In
-        </button>
+
+      <div className="login">
+        <Grid textAlign="center">
+          <Container>
+            <Header size="huge">Please Sign In</Header>
+            <Form size="large">
+              <Form.Input
+                name="username"
+                placeholder="Username"
+                type="text"
+                onChange={this.handleOnChangeUserName}
+                value={this.state.inputName}
+              />
+              <Form.Input
+                name="password"
+                placeholder="Password"
+                type="password"
+                value={this.state.inputPass}
+                onChange={this.handleOnChangePassword}
+              />
+              <Button primary fluid size="large" type="submit" onClick={this.handleSignIn}>
+                Sign in
+              </Button><br></br>
+              <Button primary fluid size="large" type="submit" onClick={this.handleClick}>
+                New User
+              </Button>
+              
+            </Form>
+          </Container>
+        </Grid>
       </div>
+
     );
   }
 }

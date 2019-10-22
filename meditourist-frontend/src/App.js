@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom'
+import { Route, withRouter, Redirect } from "react-router-dom";
 import "./App.css";
 import LogInContainer from "./containers/LogInContainer";
 import NavBar from "./components/NavBar";
@@ -12,6 +12,7 @@ class App extends Component {
     super();
 
     this.state = {
+      redirect: null,
       currentUser: null,
       procedure: "",
       price: 0,
@@ -49,22 +50,35 @@ class App extends Component {
       )
       .then(async () => {
         localStorage.setItem("token", this.state.currentUser.jwt);
-        console.log("logged in user", this.state.currentUser);
+        console.log("user logged in");
+        this.props.history.push("/user/search/clinics");
       });
   };
 
   logOut = () => {
-    console.log("logging out")
+    console.log("logging out");
     this.setState({
-      currentUser: null
-    })
-  }
+      redirect: null,
+      currentUser: null,
+      procedure: "",
+      price: 0,
+      us_cost: 0,
+      selected_country: "",
+      selected_clinic: {
+        name: "",
+        address: "",
+        overview: ""
+      },
+      clinic_choices: [],
+      allTrips: []
+    });
+  };
 
   handleProcedureChange = e => {
-    console.log("price",parseInt(e.target.value.slice(0, 5)))
+    console.log("price", parseInt(e.target.value.slice(0, 5)));
     this.setState({
       procedure: e.target.value.slice(5),
-      us_cost: e.target.value.slice(0,5)
+      us_cost: e.target.value.slice(0, 5)
     });
   };
 
@@ -75,29 +89,53 @@ class App extends Component {
   };
 
   handleScrapeForClinicCards = e => {
+    //handle the 'select country' for country in the cheapest option search
     e.preventDefault();
-    console.log("scrape for clinic cards");
-    console.log("procedure for clinic cards", this.state.procedure);
-    console.log("country for clinic cards", this.state.selected_country);
+    if (
+      this.state.selected_country &&
+      this.state.selected_country !== "Select Cheapest"
+    ) {
+      console.log("scrape for clinic cards");
+      console.log("procedure for clinic cards", this.state.procedure);
+      console.log("country for clinic cards", this.state.selected_country);
 
-    fetch(this.props.BackendURL + "/getclinics", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        procedure: this.state.procedure,
-        country: this.state.selected_country
-      })
-    })
-      .then(res => res.json())
-      .then(data =>
-        this.setState({
-          clinic_choices: data
+      fetch(this.props.BackendURL + "/getclinics", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          procedure: this.state.procedure,
+          country: this.state.selected_country
         })
-      );
+      })
+        .then(res => res.json())
+        .then(data =>
+          this.setState({
+            clinic_choices: data
+          })
+        );
+    } else {
+      fetch(this.props.BackendURL + "/getcheapest", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          procedure: this.state.procedure
+        })
+      })
+        .then(res => res.json())
+        .then(data =>
+          this.setState({
+            clinic_choices: data
+          })
+        );
+    }
   };
 
   handleModalScrapeAndGeneration = (search_term, clinic_name, price) => {
@@ -125,47 +163,105 @@ class App extends Component {
           }
         })
       )
-      .then(async () =>
-        console.log("state after clicking modal button", this.state)
-      );
+      .then(async () => {
+        console.log("state after clicking modal button", this.state);
+      });
   };
 
-  setAllTrips = (data) => {
+  setAllTrips = data => {
+    console.log("setting all trips");
     this.setState({
       allTrips: data
-    })
-  }
+    });
+  };
 
+  handleRedirect = () => {
+    if (
+      !this.state.currentUser &&
+      this.state.redirect === null &&
+      window.location.pathname !== "/login"
+    ) {
+      this.setState({ redirect: "/login" });
+    }
+    if (!!this.state.redirect) {
+      let temp = this.state.redirect;
+      this.setState({ redirect: null });
+      return <Redirect to={`${temp}`} />;
+    } else {
+      return null;
+    }
+  };
+
+  fetchUser = () => {
+    console.log("fetching user");
+    fetch(this.props.BackendURL + "/user-trips", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        user_id: this.state.currentUser["user"]["id"]
+      })
+    })
+      .then(res => res.json())
+      .then(data => this.setAllTrips(data))
+      .then(this.props.history.push("/user/trips"));
+  };
 
   render() {
     return (
       <div>
-        {/* <Router history={this.state.history}> */}
-          {/* <Route path='/signin'></Route> */}
-        <LogInContainer
-          BackendURL={this.props.BackendURL}
-          onLogIn={this.logIn}
-        />
-        <NavBar state={this.state} logOut={this.logOut} setAllTrips={this.setAllTrips} BackendURL={this.props.BackendURL}/>
-        <InitialSearchContainer
-          state={this.state}
-          procedure={this.state.procedure}
-          handleProcedureChange={this.handleProcedureChange}
-          handleCountryChange={this.handleCountryChange}
-          handleScrapeForClinicCards={e => this.handleScrapeForClinicCards(e)}
-          BackendURL={this.props.BackendURL}
-        />
-        <ClinicCardContainer
-          state={this.state}
-          BackendURL={this.props.BackendURL}
-          clinic_choices={this.state.clinic_choices}
-          handleModalScrapeAndGeneration={this.handleModalScrapeAndGeneration}
-        />
-        <TripsContainer state={this.state} setAllTrips={this.setAllTrips}BackendURL={this.props.BackendURL} />
-        {/* </Router> */}
+        {this.handleRedirect()}
+        <Route path="/login">
+          <LogInContainer
+            BackendURL={this.props.BackendURL}
+            onLogIn={this.logIn}
+          />
+        </Route>
+
+        <Route path="/user">
+          <NavBar
+            fetchUser={this.fetchUser}
+            state={this.state}
+            logOut={this.logOut}
+            setAllTrips={this.setAllTrips}
+            BackendURL={this.props.BackendURL}
+          />
+        </Route>
+
+        <Route path="/user/search">
+          <InitialSearchContainer
+            state={this.state}
+            procedure={this.state.procedure}
+            handleProcedureChange={this.handleProcedureChange}
+            handleCountryChange={this.handleCountryChange}
+            handleScrapeForClinicCards={e => this.handleScrapeForClinicCards(e)}
+            BackendURL={this.props.BackendURL}
+          />
+        </Route>
+
+        <Route path="/user/search/clinics">
+          <ClinicCardContainer
+            fetchUser={this.fetchUser}
+            state={this.state}
+            BackendURL={this.props.BackendURL}
+            clinic_choices={this.state.clinic_choices}
+            handleModalScrapeAndGeneration={this.handleModalScrapeAndGeneration}
+          />
+        </Route>
+
+        <Route path="/user/trips">
+          <TripsContainer
+            state={this.state}
+            setAllTrips={this.setAllTrips}
+            BackendURL={this.props.BackendURL}
+          />
+        </Route>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

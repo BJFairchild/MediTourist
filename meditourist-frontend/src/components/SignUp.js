@@ -1,5 +1,13 @@
 import React, { Component } from "react";
 
+import {
+  Button,
+  Container,
+  Form,
+  Grid,
+  Header
+} from "semantic-ui-react";
+
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -43,23 +51,59 @@ class SignUp extends Component {
       );
   };
 
+  handleClick = () => {
+    this.props.changeNewUserFlag()
+    }
+
   render() {
     return (
-      <div>
-        <label>Username</label>
-        <input
-          type="text"
-          value={this.state.inputName}
-          onChange={this.handleOnChangeUserName}
-        />
-        <label>Password</label>
-        <input
-          type="text"
-          value={this.state.inputPass}
-          onChange={this.handleOnChangePassword}
-        />
-        <button onClick={this.handleSignUp}>New User</button>
+
+      <div className="login">
+        <Grid textAlign="center">
+          <Container>
+            <Header size="huge">New User</Header>
+            <Form size="large">
+              <Form.Input
+                name="username"
+                placeholder="Username"
+                type="text"
+                onChange={this.handleOnChangeUserName}
+                value={this.state.inputName}
+              />
+              <Form.Input
+                name="password"
+                placeholder="Password"
+                type="password"
+                value={this.state.inputPass}
+                onChange={this.handleOnChangePassword}
+              />
+              <Button primary fluid size="large" type="submit" onClick={this.handleSignUp}>
+                Sign Up
+              </Button>
+              <br></br>
+              <Button primary fluid size="large" type="submit" onClick={this.handleClick}>
+                Returning User
+              </Button>
+            </Form>
+          </Container>
+        </Grid>
       </div>
+
+      // <div>
+      //   <label>Username</label>
+      //   <input
+      //     type="text"
+      //     value={this.state.inputName}
+      //     onChange={this.handleOnChangeUserName}
+      //   />
+      //   <label>Password</label>
+      //   <input
+      //     type="text"
+      //     value={this.state.inputPass}
+      //     onChange={this.handleOnChangePassword}
+      //   />
+      //   <button onClick={this.handleSignUp}>New User</button>
+      // </div>
     );
   }
 }

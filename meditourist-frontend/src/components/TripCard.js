@@ -102,8 +102,9 @@ class TripCard extends Component {
     return this.state.flight_data.price === 0 ? (
       <Card.Content>
         <Image floated="right" size="mini" src={flag_url} alt="flag" />
-        <Card.Header>My {procedure} Trip</Card.Header>
+        <Card.Header>{procedure} Trip</Card.Header>
         <Card.Meta>Destination: {country}</Card.Meta>
+        <Card.Description>US Cost: ${this.calculateUSCost()}</Card.Description>
         <Card.Description>Procedure: ${price}</Card.Description>
         <Card.Description>Savings: ${savings}</Card.Description>
         <Button onClick={this.createFlight}>Find a Flight</Button>
@@ -111,18 +112,26 @@ class TripCard extends Component {
     ) : (
       <Card.Content>
         <Image floated="right" size="mini" src={flag_url} alt="flag" />
-        <Card.Header>My {procedure} Trip</Card.Header>
+        <Card.Header>{procedure} Trip</Card.Header>
         <Card.Meta>Destination: {country}</Card.Meta>
+        <Card.Description>US Cost: ${this.calculateUSCost()}</Card.Description>
         <Card.Description>Procedure: ${price}</Card.Description>
-        <Card.Description>Flight: ${this.state.flight_data.price}</Card.Description>
+        <Card.Description>
+          Flight: ${this.state.flight_data.price}
+        </Card.Description>
         <Card.Description>Savings: ${this.calculateSavings()}</Card.Description>
       </Card.Content>
     );
   };
+  calculateUSCost = () => {
+    return ((parseInt(this.props.item.savings) + parseInt(this.props.item.price)))
+  }
 
   calculateSavings = () => {
-      return (parseInt(this.props.item.savings) - parseInt(this.state.flight_data.price))
-  }
+    return (
+      parseInt(this.props.item.savings) - parseInt(this.state.flight_data.price)
+    );
+  };
 
   createFlight = () => {
     console.log("clicking create flight");
@@ -155,7 +164,7 @@ class TripCard extends Component {
   render() {
     return (
       <div>
-        <div>
+        <div className="trips">
           <Card>
             {this.isFlightCostSet()}
             <Card.Content extra>
@@ -172,13 +181,13 @@ class TripCard extends Component {
               </div>
             </Card.Content>
           </Card>
-          {this.generateMap()}
-        </div>
         <FlightContainer
           flightData={this.state.flight_data}
           country={this.props.item.country}
           city={this.props.item.destination_city}
-        />
+          />
+          </div>
+          <div>{this.generateMap()}</div>
         <br></br>
       </div>
     );

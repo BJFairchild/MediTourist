@@ -9,6 +9,7 @@ class ClinicCardContainer extends Component {
       return this.props.clinic_choices.map((item, index) => {
         return (
           <ClinicCard
+          fetchUser={this.props.fetchUser}
             state={this.props.state}
             BackendURL={this.props.BackendURL}
             item={item}

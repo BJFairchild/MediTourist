@@ -15,4 +15,5 @@ Rails.application.routes.draw do
   post '/getcoords', to: 'coms#getCoords'
   post '/getflag', to: 'coms#getFlag'
   post '/getflights', to: 'coms#getFlights'
+  post '/getcheapest', to: 'scrape#getCheapest'
 end

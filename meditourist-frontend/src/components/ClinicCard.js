@@ -5,6 +5,7 @@ class ClinicCard extends Component {
   showModal = () => {
     return (
       <ModalScroll
+        fetchUser={this.props.fetchUser}
         BackendURL={this.props.BackendURL}
         cityCountry={this.props.item[2]}
         state={this.props.state}

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Header, Icon, Image, Modal } from "semantic-ui-react";
+import { withRouter } from "react-router-dom";
 
 class ModalScroll extends Component {
   state = { baseUrl: "https://www.medigo.com/", flagURL: "" };
@@ -99,9 +100,8 @@ class ModalScroll extends Component {
           0,
           this.props.cityCountry.lastIndexOf(",")
         )
-        
       })
-    });
+    }).then(this.props.fetchUser());
   };
 
   render() {
@@ -139,4 +139,4 @@ class ModalScroll extends Component {
     );
   }
 }
-export default ModalScroll;
+export default withRouter(ModalScroll);

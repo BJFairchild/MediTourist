@@ -9,7 +9,7 @@ class ScrapeController < ApplicationController
         @test.ignore_bad_chunking = true
         @test.follow_meta_refresh = true
 
-        page = @test.get("https://www.medigo.com/en-us/plastic-and-cosmetic-surgery/#{params[:procedure]}?sort=best_match&lang_filter=en")
+        page = @test.get("https://www.medigo.com/en-us/plastic-and-cosmetic-surgery/#{params[:procedure]}?sort=price&lang_filter=en")
 
         country_values_array = []
         country_names = []
@@ -73,6 +73,48 @@ class ScrapeController < ApplicationController
         render :json => @results
     end
 
+    def getCheapest
+        @test = Mechanize.new
+        @test.user_agent_alias = 'Mac Safari'
+        @test.request_headers = {"Accept-Encoding" => ""}
+        @test.ignore_bad_chunking = true
+        @test.follow_meta_refresh = true
+
+        page = @test.get("https://www.medigo.com/en-us/plastic-and-cosmetic-surgery/#{params[:procedure]}?sort=price&lang_filter=en")
+
+        clinic_location_item = page.search('li.item-list div.clinic-location')
+        clinic_locations = []
+        clinic_location_item.each do |item|
+            clinic_locations << item.text.strip
+        end
+
+        clinic_name_item = page.search('li.item-list h3.clinic-name a')
+        clinic_names = []
+        clinic_names_href = []
+        clinic_name_item.each do |link|
+            clinic_names << link.text.strip[0..-54].tr("\n","").gsub(/\s+/, ' ')
+            clinic_names_href << link['href']
+        end
+        
+        price_item = page.search('span.price em')
+        prices_list = []
+        price_item.each do |item|
+            prices_list << item.text.strip
+        end
+        prices = prices_list.uniq
+
+        completed_items = []
+        count = 0
+        while count <= clinic_names.length do
+            completed_items << [clinic_names[count] , clinic_names_href[count] , clinic_locations[count] , prices[count]] 
+            count += 1
+        end
+        
+        @results = completed_items[0..-2]
+
+        render :json => @results
+    end
+
     def getClinicOverview
         @test = Mechanize.new
         @test.user_agent_alias = 'Mac Safari'
@@ -92,6 +134,10 @@ class ScrapeController < ApplicationController
         clinic_overview_item.each do |item|
             descript_array << item.text.strip
         end
+        descript_array2  = []
+        descript_array2 << descript_array.slice(0..4) << descript_array.last
+        descript_array = descript_array2.flatten
+
         @results << descript_array
 
         render :json => @results

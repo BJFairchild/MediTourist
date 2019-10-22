@@ -5,12 +5,25 @@ import SignUp from '../components/SignUp'
 
 class LogInContainer extends Component {
 
+    state = {
+        newUser: false
+    }
     
+    changeNewUserFlag = () => {
+        this.setState({
+            newUser: !this.state.newUser
+        })
+    }
+
+    generateLogIn = () => {
+        return this.state.newUser ? (<SignUp changeNewUserFlag={this.changeNewUserFlag} onLogIn={this.props.onLogIn} BackendURL={this.props.BackendURL}/>) : (<LogIn changeNewUserFlag={this.changeNewUserFlag} onLogIn={this.props.onLogIn}/>)
+    }
+
     render(){
         return(
             <div id="loginContainer">
-                <LogIn onLogIn={this.props.onLogIn}/>
-                <SignUp onLogIn={this.props.onLogIn} BackendURL={this.props.BackendURL}/>
+                <div id="title">MediTourist</div>
+                {this.generateLogIn()}
             </div>
         )
     }

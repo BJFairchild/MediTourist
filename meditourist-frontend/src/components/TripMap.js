@@ -3,14 +3,13 @@ import { Container, Image } from "semantic-ui-react";
 import {
   GoogleApiWrapper,
   Map,
-  InfoWindow,
   Marker,
-  GoogleMapReact
 } from "google-maps-react";
 
 const mapStyles = {
-  width: "60vw",
-  height: "80vh"
+  width: "50vw",
+  height: "50vh",
+  margin: "0vw 25vw 0vw 25vw"
 };
 
 class TripMap extends Component {
@@ -25,6 +24,7 @@ class TripMap extends Component {
       <div id="map">
         
         <Map
+          className="test"
           google={this.props.google}
           initialCenter={this.state.center}
           style={mapStyles}

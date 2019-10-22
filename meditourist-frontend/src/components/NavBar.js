@@ -1,7 +1,14 @@
 import React, { Component } from "react";
+import { Menu, Grid, Header } from "semantic-ui-react";
+import { withRouter } from "react-router-dom";
+
 
 class NavBar extends Component {
+
+
+
   fetchUser = () => {
+    console.log("fetching user")
     fetch(this.props.BackendURL + "/user-trips", {
       method: "POST",
       headers: {
@@ -14,7 +21,8 @@ class NavBar extends Component {
       })
     })
       .then(res => res.json())
-      .then(async data => this.props.setAllTrips(data));
+      .then(data => this.props.setAllTrips(data))
+      .then(this.props.history.push("/user/trips"));
   };
   populateProcedure = () => {
     if (this.props.state.procedure !== "") {
@@ -69,41 +77,77 @@ class NavBar extends Component {
   };
 
   handleLogOut = () => {
-    this.props.logOut()
+    this.props.logOut();
+  };
+
+  handleTripsClick = () => {
+    this.props.fetchUser()
   }
 
   render() {
     return (
-      <div id="navbar">
-        Navbar
-        <div>
-          <button onClick={this.fetchUser}>My Trips</button>
-        </div>
-        <div>
-          <h5>Procedure</h5>
-          {this.populateProcedure()}
-          </div><div>
-          <h5>Country</h5>
-          {this.populateCountry()}
-        </div>
-        <div>
-          <h5>US Cost (budget)</h5>
-          {this.populateBudget()}
-        </div>
-        <div>
-          <h5>Current Cost</h5>
-          {this.populateCost()}
-        </div>
-        <div>
-          <h5>Savings</h5>
-          {this.populateSavings()}
-        </div>
-        <div>
-          <button onClick={this.handleLogOut}>Logout</button>
-        </div>
+      <div>
+        <Header position="right" size="large" as="h3">
+          MediTourist
+        </Header>
+        <Menu secondary>
+          <Menu.Item
+            name="Procedure"
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name="Country"
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name="US Cost"
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name="Current Cost"
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name="Savings"
+            onClick={this.handleItemClick}
+          />
+          <Menu.Menu position="right">
+            <Menu.Item name=" My Trips" onClick={this.handleTripsClick}></Menu.Item>
+            <Menu.Item name="logout" onClick={this.handleLogOut} />
+          </Menu.Menu>
+        </Menu>
       </div>
+
+      // <div id="navbar">
+      //   Navbar
+      //   <div>
+      //     <button onClick={this.fetchUser}>My Trips</button>
+      //   </div>
+      //   <div>
+      //     <h5>Procedure</h5>
+      //     {this.populateProcedure()}
+      //     </div><div>
+      //     <h5>Country</h5>
+      //     {this.populateCountry()}
+      //   </div>
+      //   <div>
+      //     <h5>US Cost (budget)</h5>
+      //     {this.populateBudget()}
+      //   </div>
+      //   <div>
+      //     <h5>Current Cost</h5>
+      //     {this.populateCost()}
+      //   </div>
+      //   <div>
+      //     <h5>Savings</h5>
+      //     {this.populateSavings()}
+      //   </div>
+      //   <div>
+      //     <button onClick={this.handleLogOut}>Logout</button>
+      //   </div>
+      // </div>
     );
   }
 }
 
-export default NavBar;
+export default withRouter(NavBar);
