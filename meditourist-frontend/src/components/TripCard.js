@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { Button, Card, Image } from "semantic-ui-react";
 import TripMap from "../components/TripMap";
 import FlightContainer from "../containers/FlightContainer";
+import TravelLoaderHOC from '../HOC/TravelLoaderHOC'
 
 class TripCard extends Component {
   state = {
     showMap: false,
     center: {},
-    flight_cost: 0,
+    flight_clicked: false,
     flight_data: {
       airlines: "",
       price: 0,
@@ -50,6 +51,7 @@ class TripCard extends Component {
   };
 
   deleteTrip = e => {
+    this.resetPrice()
     console.log(e.target.value);
     console.log("userid", this.props.state.currentUser["user"]["id"]);
     fetch(this.props.BackendURL + "/deletetrip", {
@@ -67,6 +69,16 @@ class TripCard extends Component {
       .then(res => res.json())
       .then(data => this.props.setAllTrips(data));
   };
+
+  resetPrice = () => { // CHECK TO SEE IF THIS WORKS
+    this.setState({
+      flight_data: {
+        airlines: "",
+        price: 0,
+        url: ""
+      }
+    })
+  }
 
   hideMap = () => {
     this.setState({
@@ -106,8 +118,8 @@ class TripCard extends Component {
         <Card.Meta>Destination: {country}</Card.Meta>
         <Card.Description>US Cost: ${this.calculateUSCost()}</Card.Description>
         <Card.Description>Procedure: ${price}</Card.Description>
-        <Card.Description>Savings: ${savings}</Card.Description>
-        <Button onClick={this.createFlight}>Find a Flight</Button>
+        <Card.Description>Savings: ${savings}</Card.Description><br></br>
+        <Button basic color="blue"onClick={this.createFlight}>Find a Flight</Button>
       </Card.Content>
     ) : (
       <Card.Content>
@@ -134,6 +146,7 @@ class TripCard extends Component {
   };
 
   createFlight = () => {
+    this.setFlightFlag()
     console.log("clicking create flight");
     let country = this.props.item.country;
     let city = this.props.item.destination_city;
@@ -161,6 +174,20 @@ class TripCard extends Component {
       );
   };
 
+  setFlightFlag = () => {
+    this.setState({
+      flight_clicked: true
+    })
+  }
+
+  generateFlightContainer = () => {
+    return this.state.flight_clicked ? (<FlightContainer
+      flightData={this.state.flight_data}
+      country={this.props.item.country}
+      city={this.props.item.destination_city}
+      />) : null
+  }
+
   render() {
     return (
       <div>
@@ -181,11 +208,7 @@ class TripCard extends Component {
               </div>
             </Card.Content>
           </Card>
-        <FlightContainer
-          flightData={this.state.flight_data}
-          country={this.props.item.country}
-          city={this.props.item.destination_city}
-          />
+        {this.generateFlightContainer()}
           </div>
           <div>{this.generateMap()}</div>
         <br></br>

@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { Button, Card } from "semantic-ui-react";
+import TravelLoaderHOC from '../HOC/TravelLoaderHOC'
+
 
 class FlightContainer extends Component {
   openFlightDetails = () => {
+    console.log(this.props.flightData)
     let url = this.props.flightData.url;
     window.open(url, "_blank");
   };
@@ -34,4 +37,4 @@ class FlightContainer extends Component {
   }
 }
 
-export default FlightContainer;
+export default TravelLoaderHOC(FlightContainer);

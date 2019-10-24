@@ -61,9 +61,9 @@ class LogIn extends Component {
               <Button primary fluid size="large" type="submit" onClick={this.handleSignIn}>
                 Sign in
               </Button><br></br>
-              <Button primary fluid size="large" type="submit" onClick={this.handleClick}>
+              <a className="userLink" primary fluid size="large" type="submit" onClick={this.handleClick}>
                 New User
-              </Button>
+              </a>
               
             </Form>
           </Container>

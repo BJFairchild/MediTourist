@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ModalScroll from "./ModalScroll";
+import { Button, Card, Image } from "semantic-ui-react";
 
 class ClinicCard extends Component {
   showModal = () => {
@@ -19,21 +20,20 @@ class ClinicCard extends Component {
 
   generatePrice = () => {
     return this.props.item[3] ? (
-      <h6>{this.props.item[3]}</h6>
+      <Card.Description>{this.props.item[3]}</Card.Description>
     ) : (
-      <h6>Please inquire for pricing.</h6>
+      <Card.Description>Please inquire for pricing.</Card.Description>
     );
   };
   render() {
     return (
-      <div>
-        <div>
-          <h2>{this.props.item[0]}</h2>
-          <h4>{this.props.item[2]}</h4>
+        <Card><Card.Content>
+          <Card.Header>{this.props.item[0]}</Card.Header>
+          <Card.Description>{this.props.item[2]}</Card.Description>
           {this.generatePrice()}
           <div>{this.showModal()}</div>
-        </div>
-      </div>
+          </Card.Content>
+        </Card>
     );
   }
 }

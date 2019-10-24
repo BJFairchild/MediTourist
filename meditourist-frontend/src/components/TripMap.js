@@ -8,7 +8,7 @@ import {
 
 const mapStyles = {
   width: "50vw",
-  height: "50vh",
+  height: "70vh",
   margin: "0vw 25vw 0vw 25vw"
 };
 
@@ -22,6 +22,7 @@ class TripMap extends Component {
   render() {
     return (
       <div id="map">
+        <br></br>
         
         <Map
           className="test"

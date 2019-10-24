@@ -24,7 +24,7 @@ class ClinicCardContainer extends Component {
   };
 
   render() {
-    return <div>{this.generateClinicCards()}</div>;
+    return <div className="clinicContainer">{this.generateClinicCards()}</div>;
   }
 }
 

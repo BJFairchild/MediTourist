@@ -3,9 +3,7 @@ import TripCard from "../components/TripCard";
 
 class TripsContainer extends Component {
   generateTripCards = () => {
-    if (this.props.state.allTrips.length === 0) {
-      return <div>You currently have no saved trips.</div>;
-    } else {
+    if (this.props.state.allTrips.length !== 0) {
       return this.props.state.allTrips.map((item, index) => {
         return (
           <TripCard

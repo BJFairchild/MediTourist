@@ -32,6 +32,7 @@ class ComsController < ApplicationController
     response = JSON.parse(response)
 
     airport_code = (response["Places"][0]["PlaceId"]).split('-')[0]
+    array_of_places = response["Places"]
     trip_start = (Time.now + 52.days).to_s.slice(0..9).split('-')
     month0 = trip_start[1].sub('10', 'OCT').sub('11', 'NOV').sub('12', 'DEC').sub('1', 'JAN').sub('2', 'FEB').sub('3', 'MAR').sub('4', 'APR').sub('5', 'MAY').sub('6', 'JUN').sub('7', 'JUL').sub('8', 'AUG').sub('9', 'SEP')
     trip_end = (Time.now + 62.days).to_s.slice(0..9).split('-')
@@ -40,8 +41,7 @@ class ComsController < ApplicationController
     date0 = month0 + " " + trip_start[2] + " " + trip_start[0]
     date1 = month1 + " " + trip_end[2] + " " + trip_end[0]
     
-    response = RestClient.get("https://apidojo-hipmunk-v1.p.rapidapi.com/flights/create-session?country=US&pax=1&cabin=Coach&date0=#{date0}&date1=#{date1}&from0=SEA&to0=#{airport_code}&from1=#{airport_code}&to1=SEA", headers={'x-rapidapi-host' => 'apidojo-hipmunk-v1.p.rapidapi.com', 'x-rapidapi-key' => 'ec39913906mshf4648972b6e832fp1b2936jsn6105500e65f5'})
-    response = JSON.parse(response)
+    response = airport_search1(date0, date1, airport_code, array_of_places)
     key_array = response["itins"].keys
     flight_array = []
     key_array.each do |item|
@@ -57,26 +57,42 @@ class ComsController < ApplicationController
       priceA[:price] <=> priceB[:price]
     end
     cheapest_flight = sorted_flights.first
+    
+    response = airport_search2(date0, date1, airport_code, array_of_places, cheapest_flight)
 
-    response = RestClient.get("https://apidojo-hipmunk-v1.p.rapidapi.com/flights/book?country=US&pax=1&cabin=Coach&date0=#{date0}}&date1=#{date1}&from0=SEA&to0=#{airport_code}&from1=#{airport_code}&to1=SEA&itin=#{cheapest_flight[:key]}&booking_url=#{cheapest_flight[:booking_url]}", headers={'x-rapidapi-host' => 'apidojo-hipmunk-v1.p.rapidapi.com', 'x-rapidapi-key' => 'ec39913906mshf4648972b6e832fp1b2936jsn6105500e65f5'})
-    response = JSON.parse(response)
     airlines_keys_array = response["airlines"].keys
     airlines = []
     airlines_keys_array.each do |item|
       airlines << response["airlines"][item]["name"]
     end
     url = response["itins"][cheapest_flight[:key]]["booking_urls"][cheapest_flight[:booking_url]]["url"]
-
     @result = []
     @result << airlines.join(", ") << cheapest_flight[:price] << url
     render :json => @result
-
-
-
-  
-
-
   end
-    
+
+  def airport_search1(date0, date1, airport_code, array_of_places)
+  response = RestClient.get("https://apidojo-hipmunk-v1.p.rapidapi.com/flights/create-session?country=US&pax=1&cabin=Coach&date0=#{date0}&date1=#{date1}&from0=SEA&to0=#{airport_code}&from1=#{airport_code}&to1=SEA", headers={'x-rapidapi-host' => 'apidojo-hipmunk-v1.p.rapidapi.com', 'x-rapidapi-key' => 'ec39913906mshf4648972b6e832fp1b2936jsn6105500e65f5'})
+    response = JSON.parse(response)
+
+    if response["errors"]
+      next_place = array_of_places.shift
+      # byebug
+      airport_search1(date0, date1, next_place, array_of_places)
+    else
+      return response
+    end
+  end
+
+  def airport_search2(date0, date1, airport_code, array_of_places, cheapest_flight)
+    response = RestClient.get("https://apidojo-hipmunk-v1.p.rapidapi.com/flights/book?country=US&pax=1&cabin=Coach&date0=#{date0}}&date1=#{date1}&from0=SEA&to0=#{airport_code}&from1=#{airport_code}&to1=SEA&itin=#{cheapest_flight[:key]}&booking_url=#{cheapest_flight[:booking_url]}", headers={'x-rapidapi-host' => 'apidojo-hipmunk-v1.p.rapidapi.com', 'x-rapidapi-key' => 'ec39913906mshf4648972b6e832fp1b2936jsn6105500e65f5'})
+    response = JSON.parse(response)
+    if response["errors"]
+      next_place = array_of_places.shift
+      airport_search2(date0, date1, next_place, array_of_places, cheapest_flight)
+    else
+      return response
+    end
+  end
     
 end

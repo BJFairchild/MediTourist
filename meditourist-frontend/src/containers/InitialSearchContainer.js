@@ -31,7 +31,6 @@ class InitialSearchContainer extends Component {
     if (this.state.country_choices.length !== 0) {
       return (
         <div>
-          <label>Select Country</label>
           <select
             value={this.state.selected_country}
             onChange={this.props.handleCountryChange}
@@ -65,7 +64,7 @@ class InitialSearchContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="searchContainer">
         {this.welcomeMessage()}
         <ProcedureSelect
           procedure={this.state.procedure}

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Button, Header, Icon, Image, Modal } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
+import ModalLoaderHOC from '../HOC/ModalLoaderHOC'
+
 
 class ModalScroll extends Component {
   state = { baseUrl: "https://www.medigo.com/", flagURL: "" };
@@ -31,7 +33,6 @@ class ModalScroll extends Component {
           flagURL: data
         })
       )
-      .then(async () => console.log(this.state));
   };
 
   formatOverview = () => {
@@ -101,14 +102,14 @@ class ModalScroll extends Component {
           this.props.cityCountry.lastIndexOf(",")
         )
       })
-    }).then(this.props.fetchUser());
+    }).then(async () => this.props.fetchUser());
   };
 
   render() {
     return (
       <div>
         <Modal
-          trigger={<Button onClick={this.generateModal}>Modal Info</Button>}
+          trigger={<Button basic color="blue" className="modalBtn" onClick={this.generateModal}>More Info</Button>}
           closeIcon
         >
           <Modal.Header>
@@ -120,7 +121,6 @@ class ModalScroll extends Component {
               wrapped
               size="medium"
               src={this.state.flagURL["flag"]}
-              alt="maybe reviews?"
             />
             <Modal.Description>
               <Header>{this.props.state.selected_clinic["name"]}</Header>
@@ -139,4 +139,4 @@ class ModalScroll extends Component {
     );
   }
 }
-export default withRouter(ModalScroll);
+export default ModalLoaderHOC(withRouter(ModalScroll));

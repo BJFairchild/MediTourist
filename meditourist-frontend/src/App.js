@@ -24,7 +24,8 @@ class App extends Component {
         overview: ""
       },
       clinic_choices: [],
-      allTrips: []
+      allTrips: [],
+      modal_is_loading: false
     };
   }
 
@@ -95,10 +96,6 @@ class App extends Component {
       this.state.selected_country &&
       this.state.selected_country !== "Select Cheapest"
     ) {
-      console.log("scrape for clinic cards");
-      console.log("procedure for clinic cards", this.state.procedure);
-      console.log("country for clinic cards", this.state.selected_country);
-
       fetch(this.props.BackendURL + "/getclinics", {
         method: "POST",
         headers: {
@@ -137,10 +134,16 @@ class App extends Component {
         );
     }
   };
+  modalFlagChange = () => {
+    this.setState({
+      modal_is_loading: true
+    })
+  }
 
   handleModalScrapeAndGeneration = (search_term, clinic_name, price) => {
-    console.log("search term in app", search_term);
-
+    console.log("modal loading should be false",this.state.modal_is_loading)
+    this.modalFlagChange()
+    console.log(this.state.modal_is_loading)
     fetch(this.props.BackendURL + "/getclinicoverview", {
       method: "POST",
       headers: {
@@ -155,6 +158,7 @@ class App extends Component {
       .then(res => res.json())
       .then(data =>
         this.setState({
+          modal_is_loading: false,
           price: price,
           selected_clinic: {
             name: clinic_name,
@@ -164,7 +168,7 @@ class App extends Component {
         })
       )
       .then(async () => {
-        console.log("state after clicking modal button", this.state);
+        console.log("state after modal generation", this.state);
       });
   };
 
@@ -210,9 +214,17 @@ class App extends Component {
       .then(this.props.history.push("/user/trips"));
   };
 
+  resetState = () => {
+    this.setState({
+      currentUser: this.state.currentUser,
+      clinic_choices: []
+    })
+    this.props.history.push("/user/search/clinics")
+  }
+
   render() {
     return (
-      <div>
+      <div className="bodyTest">
         {this.handleRedirect()}
         <Route path="/login">
           <LogInContainer
@@ -223,6 +235,7 @@ class App extends Component {
 
         <Route path="/user">
           <NavBar
+          resetState={this.resetState}
             fetchUser={this.fetchUser}
             state={this.state}
             logOut={this.logOut}

@@ -16,7 +16,6 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -43,14 +42,14 @@
 }
 
 body {
+  background-color: rgb(191, 209, 243) !important;
+  
   height: 100vh;
   width: 100vw;
-}
-body {
-  background-color: #eee;
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: grayscale;
 }
+
 
 .ui.container {
   margin-top: 6rem;
@@ -64,6 +63,7 @@ body {
 .trips {
   display: flex;
   justify-content: center;
+  margin: 2vh 0 0 0;
 }
 
 .tripsWrapper {
@@ -75,20 +75,89 @@ body {
   display: flex;
   flex-direction: column;
 }
-.loginContainer{
-  display: flex;
-  justify-content: center;
+#loginContainer{
   font-family: 'Fjalla One', sans-serif;
+  background-image: url(http://getwallpapers.com/wallpaper/full/0/8/0/193335.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 1600px 800px !important;
 }
+
 .ui.huge.header{
   text-align: center;
   font-family: 'Fjalla One', sans-serif;
+  /* color: white; */
+  text-shadow: -2px -2px 0 cornsilk,
+  2px -2px 0 cornsilk,
+  -2px 2px 0 cornsilk,
+  2px 2px 0 cornsilk; 
 }
+.ui.large.header{
+  font-family: 'Delius Swash Caps', cursive;
+  text-align: right;
+  margin: 5vh 3 0 0;
+  padding-top:5px;
+  padding-right:10px;
+
+}
+
 .ui[class*="center aligned"].grid {
   display: flex;
   justify-content: center;
-  margin: 25vh 10vw 25vh 25vw;
+  margin: 10vh 10vw 25vh 25vw;
   padding-right: 25vw;
   padding-left: 10vw;
-
 }
+.title{
+  display: flex;
+  justify-content: center;
+  font-family: 'Delius Swash Caps', cursive;
+  font-size: 80px;
+  margin: 25vh 0 0 0;
+}
+.userLink{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+}
+.searchContainer{
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  text-align: center;
+  padding-top: 50px;
+}
+.clinicContainer{
+  display:flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+  padding-top: 50px;
+  align-items: baseline;
+  padding-left: 25vw;
+  padding-right: 25vw;
+}
+.clinicContainer div{
+  flex: 1 1 auto;
+  justify-content: space-between;
+  margin-left: 5px;
+  margin-right: 5px;
+  min-width: 15%;
+  min-height: 46px;
+  /* margin: 5px 5px 5px 5px; */
+}
+.content{
+  background-color: whitesmoke !important
+}
+.ui.card:last-child{
+  margin-bottom: 5;
+}
+.navtest{
+  background-image: url('https://www.accessbankplc.com/getattachment/e7f590b2-216b-4c5e-a3e7-da6fb453f39b/Banner-Airline-Payments.aspx') !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important
+}
+

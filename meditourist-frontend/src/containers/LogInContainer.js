@@ -22,7 +22,7 @@ class LogInContainer extends Component {
     render(){
         return(
             <div id="loginContainer">
-                <div id="title">MediTourist</div>
+                <div className="title">Medi-Tourist</div>
                 {this.generateLogIn()}
             </div>
         )

@@ -81,9 +81,9 @@ class SignUp extends Component {
                 Sign Up
               </Button>
               <br></br>
-              <Button primary fluid size="large" type="submit" onClick={this.handleClick}>
+              <a className="userLink" primary fluid size="large" type="submit" onClick={this.handleClick}>
                 Returning User
-              </Button>
+              </a>
             </Form>
           </Container>
         </Grid>

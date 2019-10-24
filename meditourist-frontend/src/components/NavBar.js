@@ -84,14 +84,18 @@ class NavBar extends Component {
     this.props.fetchUser()
   }
 
+  handleHomeClick = () => {
+    this.props.resetState()
+  }
+
   render() {
     return (
-      <div>
+      <div className="navtest">
         <Header position="right" size="large" as="h3">
-          MediTourist
+          Medi-Tourist
         </Header>
         <Menu secondary>
-          <Menu.Item
+          {/* <Menu.Item
             name="Procedure"
             onClick={this.handleItemClick}
           />
@@ -110,9 +114,10 @@ class NavBar extends Component {
           <Menu.Item
             name="Savings"
             onClick={this.handleItemClick}
-          />
+          /> */}
           <Menu.Menu position="right">
-            <Menu.Item name=" My Trips" onClick={this.handleTripsClick}></Menu.Item>
+          <Menu.Item name="Home" onClick={this.handleHomeClick}></Menu.Item>
+            <Menu.Item name="My Trips" onClick={this.handleTripsClick}></Menu.Item>
             <Menu.Item name="logout" onClick={this.handleLogOut} />
           </Menu.Menu>
         </Menu>

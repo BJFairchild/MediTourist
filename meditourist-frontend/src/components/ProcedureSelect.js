@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import { Dropdown } from 'semantic-ui-react'
+
+
 
 class ProcedureSelect extends Component{
 
@@ -7,7 +10,6 @@ class ProcedureSelect extends Component{
     render(){
         return(
             <form onSubmit={this.props.handleScrapeForCountryChoices}>
-            <label>Select Procedure</label>
             <select
               value={this.props.procedure}
               onChange={this.props.handleProcedureChange}
@@ -21,7 +23,6 @@ class ProcedureSelect extends Component{
               <option value="08495breast-implants">Breast Implants</option>
               <option value="02995liposuction">Liposuction</option>
               <option value="08995breast-lift">Breast Lift</option>
-              <option value="05785male-breast-reduction">Male Breast Reduction</option>
               <option value="04995otoplasty">Otoplasty</option>
               <option value="08995arm-lift">Arm Lift</option>
               <option value="09995breast-reconstruction">Breast Reconstruction</option>
@@ -61,11 +62,6 @@ class ProcedureSelect extends Component{
               <option value="03775areola-reduction">Aereola Reduction</option>
               <option value="16000belt-lipectomy">Belt Lipectomy</option>
               <option value="08000pectoral-implants">Pectoral Implants</option>
-              <option value="07995tracheal-shave">Tracheal Shave</option>
-              <option value="08500breast-capsulectomy">Breast Capsulectomy</option>
-              <option value="07500cleft-lip-or-palate-repair">
-                Cleft Lip or Palate Repair
-              </option>
               <option value="08995facial-feminization-surgery">
                 Facial Feminization Surgery
               </option>
@@ -81,7 +77,6 @@ class ProcedureSelect extends Component{
                 Sex Reassignment Surgery (M -> F)
               </option>
               <option value="13000penis-augmentation">Penis Augmentation</option>
-              <option value="04000sweat-gland-suction">Sweat Gland Suction</option>
               <option value="50000sex-reassignment-surgery-female-to-male">
                 Sex Reassignment Surgery (F -> M)
               </option>
@@ -93,3 +88,72 @@ class ProcedureSelect extends Component{
 }
 
 export default ProcedureSelect
+
+
+
+              // let procedureOptions = [
+              // {key: "08995breast-reduction", value: "08995breast-reduction", text: "Breast Reduction"},
+              // {key: "06995rhinoplasty">Rhinoplasty" },
+              // {key: "07655facelift">Facelift" },
+              // {key: "07485tummy-tuck-abdominoplasty">Tummy Tuck" },
+              // {key: "06595eyelid-surgery">Eyelid Surgery" },
+              // {key: "08495breast-implants">Breast Implants" },
+              // {key: "02995liposuction">Liposuction" },
+              // {key: "08995breast-lift">Breast Lift" },
+              // {key: "04995otoplasty">Otoplasty" },
+              // {key: "08995arm-lift">Arm Lift" },
+              // {key: "09995breast-reconstruction">Breast Reconstruction" },
+              // {key: "06995neck-lift">Neck Lift" },
+              // {key: "04985brow-lift">Brow Lift" },
+              // {key: "08995thigh-lift">Thigh Lift" },
+              // {key: "04995breast-augmentation">Breast Augmentation" },
+              // {key: "16995body-lift">Body Lift" },
+              // {key: "12995buttock-implants">Buttock Implants" },
+              // {key: "09500butt-lift">Butt Lift" },
+              // {key: "04400labiaplasty">Labiaplasty" },
+              // {key: "05000lip-augmentation">Lip Augmentation" },
+              // {key: "04995facial-fat-transfer">Facial Fat Transfer" },
+              // {key: "03395chin-augmentation">Chin Augmentation" },
+              // {key: "05995breast-implant-revision">
+              //   Breast Implant Revision
+              // " },
+              // {key: "04400cheek-augmentation">Cheek Augmentation" },
+              // {key: "08995jaw-shaping">Jaw Shaping" },
+              // {key: "02500lip-reduction">Lip Reduction" },
+              // {key: "03995nipple-correction-surgery">
+              //   Nipple Correction Surgery
+              // " },
+              // {key: "05995calf-implants">Calf Implants" },
+              // {key: "03500nipple-reduction">Nipple Reduction" },
+              // {key: "10000mommy-makeover">Mommy Makeover" },
+              // {key: "06250hairline-lowering-surgery">
+              //   Hairline Lowering Surgery
+              // " },
+              // {key: "08500breast-implant-removal">
+              //   Breast Implant Removal
+              // " },
+              // {key: "04285double-eyelid-creation">
+              //   Double Eyelid Creation
+              // " },
+              // {key: "04150perineoplasty">Perineoplasty" },
+              // {key: "03775areola-reduction">Aereola Reduction" },
+              // {key: "16000belt-lipectomy">Belt Lipectomy" },
+              // {key: "08000pectoral-implants">Pectoral Implants" },
+              // {key: "08995facial-feminization-surgery">
+              //   Facial Feminization Surgery
+              // " },
+              // {key: "06250calf-reduction">Calf Reduction" },
+              // {key: "06375cheekbone-reduction">Cheekbone Reduction" },
+              // {key: "04000dimple-creation-surgery">
+              //   Dimple Creation Surgery
+              // " },
+              // {key: "12025clitoral-hood-reduction">
+              //   Clitoral Hood Reduction
+              // " },
+              // {key: "24000sex-reassignment-surgery-male-to-female">
+              //   Sex Reassignment Surgery (M -> F)
+              // " },
+              // {key: "13000penis-augmentation">Penis Augmentation" },
+              // {key: "50000sex-reassignment-surgery-female-to-male">
+              //   Sex Reassignment Surgery (F -> M)
+              // " }]
