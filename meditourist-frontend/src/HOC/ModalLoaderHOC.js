@@ -10,9 +10,9 @@ const ModalLoaderHOC = WrappedComponent => {
         }
 
         render() {
-            // return this.isLoading()?<ModalLoader />:<WrappedComponent {...this.props} />
+            return this.isLoading()?<ModalLoader />:<WrappedComponent {...this.props} />
 
-            return <WrappedComponent {...this.props} />
+            // return <WrappedComponent {...this.props} />
         }
     }
 }

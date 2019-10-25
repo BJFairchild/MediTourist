@@ -57,7 +57,6 @@ class ComsController < ApplicationController
       priceA[:price] <=> priceB[:price]
     end
     cheapest_flight = sorted_flights.first
-    
     response = airport_search2(date0, date1, airport_code, array_of_places, cheapest_flight)
 
     airlines_keys_array = response["airlines"].keys
@@ -72,7 +71,7 @@ class ComsController < ApplicationController
   end
 
   def airport_search1(date0, date1, airport_code, array_of_places)
-  response = RestClient.get("https://apidojo-hipmunk-v1.p.rapidapi.com/flights/create-session?country=US&pax=1&cabin=Coach&date0=#{date0}&date1=#{date1}&from0=SEA&to0=#{airport_code}&from1=#{airport_code}&to1=SEA", headers={'x-rapidapi-host' => 'apidojo-hipmunk-v1.p.rapidapi.com', 'x-rapidapi-key' => 'ec39913906mshf4648972b6e832fp1b2936jsn6105500e65f5'})
+  response = RestClient.get("https://apidojo-hipmunk-v1.p.rapidapi.com/flights/create-session?country=US&pax=1&cabin=Coach&date0=#{date0}&date1=#{date1}&from0=SEA&to0=#{airport_code}&from1=#{airport_code}&to1=SEA", headers={'x-rapidapi-host' => 'apidojo-hipmunk-v1.p.rapidapi.com', 'x-rapidapi-key' => 'caebf4ad92mshbe2bd0d979f4c15p1604cajsn7cb27a6b644d'})
     response = JSON.parse(response)
 
     if response["errors"]
@@ -85,7 +84,7 @@ class ComsController < ApplicationController
   end
 
   def airport_search2(date0, date1, airport_code, array_of_places, cheapest_flight)
-    response = RestClient.get("https://apidojo-hipmunk-v1.p.rapidapi.com/flights/book?country=US&pax=1&cabin=Coach&date0=#{date0}}&date1=#{date1}&from0=SEA&to0=#{airport_code}&from1=#{airport_code}&to1=SEA&itin=#{cheapest_flight[:key]}&booking_url=#{cheapest_flight[:booking_url]}", headers={'x-rapidapi-host' => 'apidojo-hipmunk-v1.p.rapidapi.com', 'x-rapidapi-key' => 'ec39913906mshf4648972b6e832fp1b2936jsn6105500e65f5'})
+    response = RestClient.get("https://apidojo-hipmunk-v1.p.rapidapi.com/flights/book?country=US&pax=1&cabin=Coach&date0=#{date0}}&date1=#{date1}&from0=SEA&to0=#{airport_code}&from1=#{airport_code}&to1=SEA&itin=#{cheapest_flight[:key]}&booking_url=#{cheapest_flight[:booking_url]}", headers={'x-rapidapi-host' => 'apidojo-hipmunk-v1.p.rapidapi.com', 'x-rapidapi-key' => 'caebf4ad92mshbe2bd0d979f4c15p1604cajsn7cb27a6b644d'})
     response = JSON.parse(response)
     if response["errors"]
       next_place = array_of_places.shift

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Header, Icon, Image, Modal } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import ModalLoaderHOC from '../HOC/ModalLoaderHOC'
+import ContentForModal from '../components/ContentForModal'
 
 
 class ModalScroll extends Component {
@@ -108,35 +109,16 @@ class ModalScroll extends Component {
   render() {
     return (
       <div>
-        <Modal
-          trigger={<Button basic color="blue" className="modalBtn" onClick={this.generateModal}>More Info</Button>}
-          closeIcon
-        >
-          <Modal.Header>
-            Procedure: {this.formatProcedureName()}
-            <br></br>Price: {this.props.state.price}{" "}
-          </Modal.Header>
-          <Modal.Content image>
-            <Image
-              wrapped
-              size="medium"
-              src={this.state.flagURL["flag"]}
-            />
-            <Modal.Description>
-              <Header>{this.props.state.selected_clinic["name"]}</Header>
-              <p>{this.props.state.selected_clinic["address"]}</p>
-              <br></br>
-              {this.formatOverview()}
-            </Modal.Description>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button primary onClick={this.handleCreateTrip}>
-              Set Destination <Icon name="right chevron" />
-            </Button>
-          </Modal.Actions>
+         <Modal
+            trigger={<Button basic color="blue" className="modalBtn" onClick={this.generateModal}>More Info</Button>}
+            closeIcon
+          >
+        <ContentForModal handleCreateTrip={this.handleCreateTrip} formatOverview={this.formatOverview} formatProcedureName={this.formatProcedureName} state={this.props.state}flagURL={this.state.flagURL} generateModal={this.generateModal}/>
         </Modal>
+
       </div>
+      
     );
   }
 }
-export default ModalLoaderHOC(withRouter(ModalScroll));
+export default withRouter(ModalScroll);

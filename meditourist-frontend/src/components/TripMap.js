@@ -31,6 +31,7 @@ class TripMap extends Component {
           style={mapStyles}
           zoom={this.state.zoom}
         >
+          
           <Marker position={this.state.center} />
         </Map>
       </div>
