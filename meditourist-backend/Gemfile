@@ -52,4 +52,4 @@ gem "jwt", "~> 2.2"
 
 gem "faker", "~> 2.2"
 
-gem 'mechanize', '~> 2.7', '>= 2.7.4'
+gem 'mechanize', '~> 2.7'
